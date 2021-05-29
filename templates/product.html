@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div style="margin-top: 100px;" class="container">
+    <div class="mb-3">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img style="max-width: 400px;" class="card-image" src="{{product_image}}">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h1 class="card-title">{{product_name}}</h1>
+                    <h2>{{product_cost}}&#8381;</h2>
+                    <p class="card-text">{{product_about}}</p>
+                    {% if product_stock != 0 %}
+                        <a href="" class="btn btn-primary">Добавить в корзину</a>
+                        {% else %}
+                        <a href="" class="btn btn-secondary disabled " >Нет в наличии</a>
+                    {% endif %}</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

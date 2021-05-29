@@ -1,0 +1,387 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/static/css/user.css">
+{% endblock %}
+
+
+{% block content %}
+<main>
+    <section class="py-5 my-5">
+        <div class="container-fluid">
+            <h1 class="mb-5">Панель администратора</h1>
+            <div class="bg-white shadow rounded-lg d-block d-sm-flex">
+                <div class="profile-tab-nav border-right">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <a class="nav-link active" id="main-tab" data-toggle="pill" href="#main" role="tab"
+                           aria-controls="main" aria-selected="true">
+                            Главная
+                        </a>
+                        <a class="nav-link" id="users-tab" data-toggle="pill" href="#users" role="tab"
+                           aria-controls="users" aria-selected="false">
+                            Пользователи
+                        </a>
+                        <a class="nav-link" id="products-tab" data-toggle="pill" href="#products" role="tab"
+                           aria-controls="products" aria-selected="false">
+                            Товары
+                        </a>
+                        <a class="nav-link" id="category-tab" data-toggle="pill" href="#category" role="tab"
+                           aria-controls="category" aria-selected="false">
+                            Категории
+                        </a>
+                        <a class="nav-link" id="orders-tab" data-toggle="pill" href="#orders" role="tab"
+                           aria-controls="order" aria-selected="false">
+                            Заказы
+                        </a>
+                    </div>
+                </div>
+                <form action="" method="post">
+                    <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="main" role="tabpanel"
+                             aria-labelledby="main-tab">
+                            <h3 class="mb-4">Главная</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Добавить администратора</label>
+                                        <input list="users_list" id="add_admin" name="add_admin" />
+                                        <datalist id="users_list">
+                                            {% for user in users %}
+                                            <option value="id - {{user[0]}}: {{user[3]}}">
+                                            {% endfor %}
+                                        </datalist>
+                                        <button name="submit_button" class="btn btn-primary" value="add_admin_btn">
+                                            Добавить
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="password-tab">
+                            <h3 class="mb-4">Пользователи</h3>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">id</th>
+                                    <th scope="col">Имя</th>
+                                    <th scope="col">Фамилия</th>
+                                    <th scope="col">Почта</th>
+                                    <th scope="col">Номер телефона</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in users %}
+                                <tr>
+                                    <th scope="row">{{user[0]}}</th>
+                                    <td>{{user[1]}}</td>
+                                    <td>{{user[2]}}</td>
+                                    <td>{{user[3]}}</td>
+                                    <td>{{user[4]}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="cart-tab">
+                            <h3 class="mb-4">Товары</h3>
+                            <table class="table" id="products-table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">id</th>
+                                    <th scope="col">Название</th>
+                                    <th scope="col">Описание</th>
+                                    <th scope="col">Ссылка на изображение</th>
+                                    <th scope="col">Количество</th>
+                                    <th scope="col">Цена</th>
+                                    <th scope="col">Категория</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for product in products %}
+                                <tr data-toggle="modal" id="row-{{product[0]}}">
+                                    <th scope="row">{{product[0]}}</th>
+                                    <td>{{product[1]}}</td>
+                                    <td data-target="{{product[2]}}">
+                                        <details>
+                                            <summary>...</summary>
+                                            {{product[2]}}
+                                        </details>
+                                    </td>
+                                    <td>{{product[3]}}</td>
+                                    <td>{{product[4]}}</td>
+                                    <td>{{product[5]}}</td>
+                                    <td>{{product[6][0]}}-{{product[6][1]}}</td>
+                                    <td>
+                                        <button id="{{product[0]}}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit" onclick="fillEditProductModal(this)">&#9998;</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#add" type="button">
+                                    Добавить
+                                </button>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#delete" type="button">
+                                    Удалить
+                                </button>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="cart-tab">
+                            <h3 class="mb-4">Категории</h3>
+                            <table class="table" id="category-table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">id</th>
+                                    <th scope="col">Название</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in category %}
+                                <tr data-toggle="modal" id="category-row-{{item[0]}}">
+                                    <th scope="row">{{item[0]}}</th>
+                                    <td>{{item[1]}}</td>
+                                    <td>
+                                        <button id="{{item[0]}}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit_category" onclick="fillEditCategoryModal(this)">&#9998;</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#add_category" type="button">
+                                    Добавить
+                                </button>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#delete_category" type="button">
+                                    Удалить
+                                </button>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                            <h3 class="mb-4">Заказы</h3>
+                        </div>
+                        <div class="modal fade" id="add" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="AddLabel">Добавить товар</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="addfloatingName">Назание</label>
+                                            <input name="add_name" type="text" class="form-control"
+                                                   id="addfloatingName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="addfloatingAbout">Описание</label>
+                                            <textarea name="add_about" class="form-control" id="addfloatingAbout"
+                                                      rows="5"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="addfloatingImage">Ссылка на изображение</label>
+                                            <input name="add_image_link" type="text" class="form-control"
+                                                   id="addfloatingImage">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="addfloatingStock">Количество</label>
+                                            <input name="add_stock" type="text" class="form-control"
+                                                   id="addfloatingStock">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="addfloatingCost">Цена</label>
+                                            <input name="add_cost" type="text" class="form-control"
+                                                   id="addfloatingCost">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="addselectCategory">Категория</label>
+                                            <select name="add_category" id="addselectCategory" class="form-control">
+                                                <option selected>...</option>
+                                                {% for item in category %}
+                                                <option value="{{item[0]}}">{{item[0]}}-{{item[1]}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
+                                        </button>
+                                        <button name="submit_button" type="submit" class="btn btn-primary" value="add_product">Добавить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="edit" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="EditLabel">Изменить товар</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="editfloatingid">id</label>
+                                            <input name="edit_id" type="text" class="form-control"
+                                                   id="editfloatingid">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editfloatingName">Назание</label>
+                                            <input name="edit_name" type="text" class="form-control"
+                                                   id="editfloatingName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editfloatingAbout">Описание</label>
+                                            <textarea name="edit_about" class="form-control" id="editfloatingAbout"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editfloatingImage">Ссылка на изображение</label>
+                                            <input name="edit_image_link" type="text" class="form-control"
+                                                   id="editfloatingImage">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editfloatingStock">Количество</label>
+                                            <input name="edit_stock" type="text" class="form-control"
+                                                   id="editfloatingStock">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editfloatingCost">Цена</label>
+                                            <input name="edit_cost" type="text" class="form-control"
+                                                   id="editfloatingCost">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editselectCategory">Категория</label>
+                                            <select name="edit_category" id="editselectCategory" class="form-control">
+                                                <option selected>...</option>
+                                                {% for item in category %}
+                                                <option value="{{item[0]}}">{{item[0]}}-{{item[1]}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
+                                        </button>
+                                        <button name="submit_button" value="edit_product" type="submit" class="btn btn-primary">Изменить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="delete" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Удалить товар</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="selectProduct">Выберите...</label>
+                                            <select name="delete_select_product" id="selectProduct" class="form-control">
+                                                <option selected>...</option>
+                                                {% for product in products %}
+                                                <option value="{{product[0]}}">{{product[0]}}-{{product[1]}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
+                                        </button>
+                                        <button name="submit_button" value="delete_product" type="submit" class="btn btn-primary">Удалить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="add_category" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Добавить категорию</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="add_name_category">Название</label>
+                                            <input name="add_name_category" type="text" class="form-control"
+                                                   id="add_name_category">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
+                                        </button>
+                                        <button name="submit_button" value="add_category" type="submit" class="btn btn-primary">Добвить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="edit_category" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Изменить категорию</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="edit_id_category">id</label>
+                                            <input name="edit_id_category" type="text" class="form-control"
+                                                   id="edit_id_category">
+                                        </div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="edit_name_category">Название</label>
+                                            <input name="edit_name_category" type="text" class="form-control"
+                                                   id="edit_name_category">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
+                                        </button>
+                                        <button name="submit_button" value="edit_category" type="submit" class="btn btn-primary">Добвить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="delete_category" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Удалить категорию</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="selectCategory">Выберите...</label>
+                                            <select name="delete_select_category" id="selectCategory" class="form-control">
+                                                <option selected>...</option>
+                                                {% for item in category %}
+                                                <option value="{{item[0]}}">{{item[0]}}-{{item[1]}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
+                                        </button>
+                                        <button name="submit_button" value="delete_category" type="submit" class="btn btn-primary">Удалить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <b class="center-text">{{message}}</b>
+        </div>
+    </section>
+
+    <script src="/static/js/table.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</main>
+{% endblock %}

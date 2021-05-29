@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/static/css/user.css">
+{% endblock %}
+
+
+{% block content %}
+<main>
+	<section class="py-5 my-5">
+		<div class="container">
+			<h1 class="mb-5">Личный кабинет</h1>
+
+			<div class="bg-white shadow rounded-lg d-block d-sm-flex">
+				<div class="profile-tab-nav border-right">
+					<div class="p-4">
+						<h4 class="text-center">{{current_user.name}} {{current_user.surname}}</h4>
+					</div>
+					<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+						<a class="nav-link active" id="account-tab" data-toggle="pill" href="#account" role="tab" aria-controls="account" aria-selected="true">
+							Личные данные
+						</a>
+						<a class="nav-link" id="password-tab" data-toggle="pill" href="#password" role="tab" aria-controls="password" aria-selected="false">
+							Пароли
+						</a>
+						<a class="nav-link" id="cart-tab" data-toggle="pill" href="#cart" role="tab" aria-controls="cart" aria-selected="false">
+							Корзина
+						</a>
+						<a class="nav-link" id="orders-tab" data-toggle="pill" href="#orders" role="tab" aria-controls="order" aria-selected="false">
+							Заказы
+						</a>
+					</div>
+				</div>
+				<form action="" method="post">
+					<div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
+						<div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+								<h3 class="mb-4">Личные данные</h3>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Имя</label>
+											<input name="name" type="text" class="form-control" value="{{current_user.name}}">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Фамилия</label>
+											<input name="surname" type="text" class="form-control" value="{{current_user.surname}}">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Электронная почта</label>
+											<input name="email" type="text" class="form-control" value="{{current_user.email}}" disabled>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Номер телефона</label>
+											<input name="phone_number" type="text" class="form-control" value="{{current_user.phone_number}}">
+										</div>
+									</div>
+								</div>
+								<div>
+									<button name="submit_button" class="btn btn-primary" value="save_info">Сохранить</button>
+								</div>
+							</div>
+						<div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+								<h3 class="mb-4">Пароли</h3>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Старый пароль</label>
+											<input name="old_password" type="password" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Новый пароль</label>
+											<input name="new_password" type="password" class="form-control">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Повторите пароль</label>
+											<input name="again_password" type="password" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div>
+									<button name="submit_button" class="btn btn-primary" value="save_password">Сохранить</button>
+								</div>
+						</div>
+						<div class="tab-pane fade" id="cart" role="tabpanel" aria-labelledby="cart-tab">
+							<h3 class="mb-4">Корзина</h3>
+							<div>
+								<button class="btn btn-primary">Заказать</button>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+							<h3 class="mb-4">Заказы</h3>
+						</div>
+					</div>
+				</form>
+			</div>
+			<b class="center-text">{{message}}</b>
+		</div>
+	</section>
+
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</main>
+{% endblock %}

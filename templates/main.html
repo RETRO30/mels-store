@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link href="/static/css/main.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+<main>
+<div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class=""
+                aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"
+                class="active"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
+                 aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <rect width="100%" height="100%" fill="#777"></rect>
+            </svg>
+
+            <div class="container">
+                <div class="carousel-caption text-start">
+                    <h1>Добро пожаловть</h1>
+                    <p>Зарегистрируйся чтобы сделать первую покупку!</p>
+                    <p><a class="btn btn-lg btn-primary"
+                          href="/register">Зарегистрироваться</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
+                 aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <rect width="100%" height="100%" fill="#777"></rect>
+            </svg>
+
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>Мы открылись!</h1>
+                    <p>Зарегистрируйся чтобы сделать первую покупку!</p>
+                    <p><a class="btn btn-lg btn-primary"
+                          href="/register">Зарегистрироваться</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+<!-- Marketing messaging and featurettes
+================================================== -->
+<!-- Wrap the rest of the page in another container to center all the content. -->
+
+<div class="container marketing">
+    <!-- Three columns of text below the carousel -->
+
+        {% for item in category %}
+
+
+        <h3 style="color: #000;">{{item[1]}}</h3>
+
+        <div class="row">
+            {% for product in products %}
+                {% if item[0] == product[6][0] %}
+                <div class="col-lg-4 mx-auto my-auto">
+                    <img style="max-width: 140px; margin: auto;" class="card-img-top" src="{{product[3]}}">
+                        <div class="card-body">
+                    <h5 class="card-title">{{product[1]}}</h5>
+                    <p class="card-text">Цена: {{product[5]}}&#8381;
+                        {% if product[4] != 0 %}
+                        В наличии
+                        {% else %}
+                        Нет в наличии
+                        {% endif %}</p>
+                    <a href="/product/{{product[0]}}" class="btn btn-primary">Перейти к товару</a>
+                        </div>
+                </div><!-- /.col-lg-4 -->
+                {% endif %}
+            {% endfor %}
+            </div>
+            <hr class="featurette-divider">
+        {% endfor %}
+</div><!-- /.container -->
+
+</main>
+
+    <!-- FOOTER -->
+    <footer class="container">
+    </footer>
+
+{% endblock %}
